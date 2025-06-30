@@ -1,1 +1,704 @@
-Coming Soon
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- mobile-friendly scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RL4Med-DDPO</title>
+
+    <!-- Bootstrap 5 CSS (responsive grid, utilities, ScrollSpy) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f9f5ef; /* soft beige */
+        color: #333;
+      }
+      /* Make the "Contents" list stick on desktop */
+      @media (min-width: 768px) {
+        #toc {
+          position: sticky;
+          top: 1rem; /* starts sticking just below the top bar */
+          max-height: 80vh; /* never run off screen */
+          overflow-y: auto;
+        }
+      }
+
+      /* Simple accent for active ScrollSpy link */
+      #toc .nav-link.active {
+        font-weight: 600;
+        text-decoration: underline;
+      }
+
+      footer.custom-footer {
+        background-color: #d8cfc4; /* Similar teal-blue */
+        color: #3b3b3b;
+        text-align: center;
+        padding: 3rem 1rem;
+      }
+
+      .footer-box {
+        background-color: #e8dfd7; /* slightly darker than beige background */
+        padding: 1.5rem;
+        border-radius: 12px;
+        max-width: 900px;
+        margin: 0 auto 1rem auto;
+      }
+
+      .footer-box h5 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .footer-box p {
+        margin-bottom: 0;
+      }
+
+      header.custom-header {
+        background-color: #d8cfc4;
+        color: #2f2f2f;
+        padding: 2rem 1rem;
+        border-radius: 0 0 16px 16px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .custom-header h1 {
+        color: #800020;
+        font-size: 2rem;
+        line-height: 1.3;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+      .custom-header p,
+      .custom-header small,
+      .custom-header a {
+        color: #2f2f2f !important;
+      }
+
+      .custom-header .btn-outline-primary {
+        border-color: white;
+        color: white;
+      }
+
+      .custom-header .btn-outline-primary:hover {
+        background-color: white;
+        color: #317d82;
+      }
+
+      section {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.8s ease-out,
+          transform 0.8s ease-out;
+      }
+
+      section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      section h2 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #800020;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 0.5rem;
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 1s ease-out forwards;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-delay-1 {
+        animation-delay: 0.3s;
+      }
+      .fade-delay-2 {
+        animation-delay: 0.6s;
+      }
+
+      .author-link {
+        color: #ffecb3; /* soft yellow that pops on blue */
+        text-decoration: underline;
+        font-weight: 600;
+      }
+
+      .author-link:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .custom-btn {
+        background-color: #2f2f2f;
+        color: white !important;
+        border-radius: 999px;
+        padding: 0.5rem 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1rem;
+        border: none;
+        text-decoration: none;
+        margin: 0.25rem;
+      }
+
+      /* Force link state colors to white too */
+      .custom-btn:link,
+      .custom-btn:visited,
+      .custom-btn:active {
+        color: white !important;
+        text-decoration: none;
+      }
+
+      .custom-btn:hover {
+        background-color: #1e1e1e;
+        text-decoration: none;
+        color: white;
+      }
+
+      .custom-btn img {
+        vertical-align: middle;
+      }
+
+      .github-btn {
+        background-color: #2f2f2f;
+        border: none;
+        border-radius: 999px;
+        padding: 0.5rem 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1rem;
+        text-decoration: none;
+        color: white !important;
+      }
+
+      .github-btn:link,
+      .github-btn:visited,
+      .github-btn:active,
+      .github-btn:focus {
+        color: white !important;
+        text-decoration: none;
+        background-color: #1e1e1e;
+      }
+
+      .github-btn:hover {
+        background-color: #1e1e1e;
+        text-decoration: none;
+        color: white;
+      }
+
+      .github-btn img {
+        vertical-align: middle;
+      }
+
+      .workshop-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+      }
+
+      .custom-header .workshop-name {
+        color: #ad2e2e !important;
+      }
+
+      /* Button container for better spacing */
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      /* Responsive adjustments for buttons */
+      @media (max-width: 576px) {
+        .button-group {
+          flex-direction: column;
+        }
+        .custom-btn {
+          width: 150px;
+          justify-content: center;
+        }
+      }
+
+      .video-container {
+        max-width: 65%; /* Adjust this percentage to match the text width */
+        margin: 0 auto; /* Center the video */
+      }
+
+      .custom-navbar {
+        background-color: #800020; /* Dark red color */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      }
+      
+      .navbar-brand {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #fff; /* White text for contrast */
+      }
+      
+      .nav-link {
+        font-weight: 500;
+        color: #fff !important; /* Ensure links are white */
+      }
+      
+      .nav-link:hover {
+        text-decoration: underline;
+        color: #ffcccb !important; /* Light red hover effect */
+      }
+      
+      .nav-link i {
+        color: #ffcccb; /* Icon color */
+      }
+
+      .navbar-nav {
+        gap: 2rem; /* Adjust horizontal spacing between icons */
+      }
+      
+      .nav-link i {
+        font-size: 1.5rem; /* Adjust icon size */
+        color: #ffcccb; /* Icon color */
+      }
+      
+      .nav-link:hover i {
+        color: #fff; /* Change icon color on hover */
+      }
+      
+      .nav-link span {
+        font-weight: 500;
+        color: #fff; /* Text color */
+      }
+
+      .custom-navbar {
+        background-color: #800020; /* Dark red color */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        padding: 0.5rem 1rem; /* Reduce vertical padding */
+      }
+      
+      .nav-link {
+        font-size: 0.9rem; /* Adjust text size */
+        padding: 0.1rem 0.5rem; /* Reduce padding inside links */
+      }
+      
+      .navbar-toggler {
+        padding: 0.1rem 0.5rem; /* Adjust toggle button padding */
+      }
+
+      
+    </style>
+  </head>
+  <body
+    data-bs-spy="scroll"
+    data-bs-target="#toc"
+    data-bs-smooth-scroll="true"
+    tabindex="0"
+  >
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg sticky-top custom-navbar">
+      <div class="container justify-content-center">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto d-flex justify-content-center gap-4">
+            <li class="nav-item">
+              <a class="nav-link text-center" href="#abstract">
+                <i class="fas fa-book-open"></i>
+                <span class="d-block mt-1">Abstract</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" href="#method">
+                <i class="fas fa-cogs"></i>
+                <span class="d-block mt-1">Method</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" href="#results">
+                <i class="fas fa-chart-bar"></i>
+                <span class="d-block mt-1">Results</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" href="#conclusion">
+                <i class="fas fa-lightbulb"></i>
+                <span class="d-block mt-1">Conclusion</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-center" href="#bibtex">
+                <i class="fas fa-quote-right"></i>
+                <span class="d-block mt-1">Citation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= HEADER ================= -->
+    <header class="custom-header w-100 fade-in">
+      <div class="container">
+        <h1 class="h3 fw-semibold">
+          RL4Med-DDPO: Reinforcement Learning for<br />
+          Controlled Guidance Towards Diverse Medical Image<br />
+          Generation using Vision-Language Foundation Models
+        </h1>
+
+        <div class="row justify-content-center my-3">
+          <div class="col-md-3 text-center">
+            <strong><a
+                href="https://parhamsaremi.github.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="author-link"
+                >Parham Saremi*</a
+              ></strong><br />
+            <small class="text-white-50"
+              >McGill University, MILA-Quebec AI Institute</small
+            >
+          </div>
+          <div class="col-md-3 text-center">
+            <strong
+              ><a
+                href="https://amarkr.com/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                class="author-link"
+                >Amar Kumar*</a
+              ></strong
+            ><br />
+            <small class="text-white-50"
+              >McGill University, MILA-Quebec AI Institute</small
+            >
+          </div>
+          <div class="col-md-3 text-center">
+            <strong><a
+                href="https://cim.mcgill.ca/~mmohamed/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="author-link"
+                >Mohamed Mohamed</a
+              ></strong><br />
+            <small class="text-white-50"
+              >McGill University, MILA-Quebec AI Institute</small
+            >
+          </div>
+          <div class="col-md-3 text-center">
+            <strong><a
+                href="https://tehraninasab.github.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="author-link"
+                >Zahra TehraniNasab</a
+              ></strong><br />
+            <small class="text-white-50"
+              >McGill University, MILA-Quebec AI Institute</small
+            >
+          </div>
+          <div class="col-md-3 text-center">
+            <strong
+              ><a
+                href="https://cim.mcgill.ca/~arbel/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="author-link"
+                >Tal Arbel</a
+              ></strong
+            ><br />
+            <small class="text-white-50"
+              >McGill University, MILA-Quebec AI Institute</small
+            >
+          </div>
+        </div>
+
+        <p class="small" style="font-size: 0.8rem">*Equal contribution</p>
+        <p class="workshop-name">MICCAI 2025</p>
+        
+        <!-- Button group for better organization -->
+        <div class="button-group">
+          <!-- arXiv button -->
+          <a
+            class="custom-btn"
+            href="https://arxiv.org/pdf/2503.15784"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" class="me-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.5 2.25H16.5C17.7426 2.25 18.75 3.25736 18.75 4.5V19.5C18.75 20.7426 17.7426 21.75 16.5 21.75H7.5C6.25736 21.75 5.25 20.7426 5.25 19.5V4.5C5.25 3.25736 6.25736 2.25 7.5 2.25Z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M9 8.25H15M9 11.25H15M9 14.25H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            arXiv
+          </a>
+
+          <!-- Poster button -->
+          <!-- <a
+            class="custom-btn"
+            href="images/cvpr25_poster_disentanglement_miv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" class="me-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3H21V18H3V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M21 18L18 21H6L3 18" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M7 7H17M7 11H17M7 15H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Poster
+          </a> -->
+
+          <!-- GitHub button -->
+          <a
+            class="custom-btn"
+            href="https://github.com/parhamsaremi/rl4med-ddpo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" class="me-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.300 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+            Code
+          </a>
+        </div>
+      </div>
+    </header>
+    <div class="container-lg my-4">
+        <!-- ================= TEASER ================= -->
+        <figure class="text-center fade-in">
+          <div class="d-inline-block w-50 text-start">
+            <!-- Add text-start here -->
+            <img
+              src="images/figure1.png"
+              alt="Paper teaser figure"
+              class="img-fluid rounded"
+            />
+            <figcaption class="text-muted small mt-2">
+              Figure 1: Comparison of synthetic samples generated from Stable Diffusion (left image) and Stable Diffusion 
+              with Reinforcement Learning (right image). The text prompt for these image samples was - <code>A dermatoscopic 
+                image with melanoma showing hairs</code>. Note the unwanted but relevant <span style="color: red;">artifacts</span> that do not align with the input text prompt.
+            </figcaption>
+          </div>
+        </figure>
+
+      <!-- ================= BODY LAYOUT ============ -->
+      <div class="row gx-5 mt-4 justify-content-center">
+        <!-- -------- Main article -------- -->
+        <main class="col-lg-8 mx-auto">
+          <section id="abstract" class="mb-5">
+            <h2>Abstract</h2>
+            <p>
+              Vision-Language Foundation Models (VLFM) have shown a tremendous increase 
+              in performance in terms of generating high-resolution, photorealistic natural 
+              images. While VLFMs show a rich understanding of semantic content across modalities, 
+              they often struggle with fine-grained alignment tasks that require precise correspondence 
+              between image regions and textual descriptions, a limitation in medical imaging, 
+              where accurate localization and detection of clinical features are essential for diagnosis 
+              and analysis. To address this issue, we propose a multi-stage architecture where a 
+              pre-trained VLFM (e.g. Stable Diffusion) provides a cursory semantic understanding, 
+              while a reinforcement learning (RL) algorithm refines the alignment through an iterative 
+              process that optimizes for understanding semantic context. The reward signal is designed 
+              to align the semantic information of the text with synthesized images. Experiments on the public 
+              ISIC2029 skin lesion dataset demonstrate that the proposed method improves (a) the quality of the generated images, and 
+              (b) the alignment with the text prompt over the original fine-tuned Stable Diffusion baseline.
+              We also show that the synthesized samples could be used to improve disease classifier performance 
+              for underrepresented subgroups through augmentation.
+            </p>
+          </section>
+
+
+          <section id="method" class="my-5">
+            <h2>Method</h2>
+          
+            <!-- Key Contributions Box -->
+            <div class="key-contributions-box p-4 rounded shadow-sm bg-light">
+              <h3>Key Contributions</h3>
+              <ul>
+                <li>We introduce <strong>RL4Med-DDPO</strong>, the first framework to integrate policy optimization with vision-language foundation models for improved text-guided medical image synthesis using Stable Diffusion.</li>
+                <li>We show that reinforcement learning (via DDPO) enhances the alignment between medical text prompts and the generated images, addressing common issues of semantic mismatch and spurious artifacts.</li>
+                <li>We propose a new evaluation metric, <em>Artifact Prevalence Rate (APR)</em>, to quantify the presence of desired attributes and artifacts in synthesized images.</li>
+                <li>Extensive experiments on the public ISIC2019 skin lesion dataset demonstrate that our method generates photorealistic images with improved text-image alignment, supporting more robust and bias-aware medical image synthesis.</li>
+              </ul>
+            </div>
+          
+            <!-- Architecture Figure -->
+            <figure class="text-start mt-4">
+              <img
+                src="images/figure2.png"
+                alt="Overview of RL4Med-DDPO pipeline"
+                class="img-fluid rounded shadow-sm"
+              />
+              <figcaption class="text-muted small mt-2">
+                Figure 2: Proposed architecture for policy optimization using a reward function for diverse 
+                and realistic image generation using fine-tuned Stable Diffusion. Given an input text prompt, 
+                the model synthesizes a realistic image x<sub>g</sub> during the reverse diffusion. This generated image 
+                is then passed to a pre-trained classifier to compute the reward which helps guide the denoising 
+                UNet to improve image synthesis so it is better semantically aligned with the input text.
+              </figcaption>
+            </figure>
+          </section>
+
+          <section id="results" class="my-5 text-start">
+            <h2 class="text-start">Results</h2>
+            
+            <!-- Figure 1 -->
+            <figure class="text-start mt-4">
+              <img
+                src="images/figure3.png"
+                alt="Disentanglement property of Stable Diffusion"
+                class="img-fluid rounded shadow-sm"
+              />
+              <figcaption class="text-muted small mt-2">
+                Figure 3: Comparing real samples for the category "melanocytic nevus with gel bubbles" with the synthesized 
+                images using fine-tuned Stable Diffusion (SD) and fine-tuned Stable Diffusion with reinforcement learning 
+                (SD+RL). Note  the unwanted <span style="color:red;">artifacts</span> present in the image synthesized by SD.
+              </figcaption>
+            </figure>
+          
+            <!-- Figure 2 -->
+            <figure class="text-start mt-4">
+              <img
+                src="images/figure4.png"
+                alt="t-SNE plot of generated latent vectors"
+                class="img-fluid rounded shadow-sm"
+              />
+              <figcaption class="text-muted small mt-2">
+                Figure 4: Qualitative comparisons of synthesized images of subgroups (based on combinations 
+                of disease and artifacts) for which none or a few (less than 20) real samples are present. 
+                Note that some of these subgroups include combinations of attributes, such as melanoma with gel 
+                bubbles and ink or melanocytic nevus with ink and hair.
+              </figcaption>
+            </figure>
+          </section>
+
+          <section id="conclusion" class="mb-5">
+            <h2>Conclusion</h2>
+            <p>
+              In this work, we demonstrate the first method showing alignment between the text prompt 
+              and image generation using a vision-foundation model guided by a policy optimization 
+              for medical imaging applications. We show through extensive qualitative and quantitative 
+              validation that these images align well with the input text prompt, and they are helpful 
+              for downstream tasks such as augmenting the classifier to improve performance over minority classes. 
+              Future work will explore the use of diverse policies for complex tasks such as subgroup clustering in 
+              the latent space for disease image marker discovery.
+            </p>
+          </section>
+
+          <section id="bibtex" class="mb-5">
+            <h2>BibTeX</h2>
+            <pre class="bg-light p-3 rounded border">
+@article{saremi2025rl4med,
+  title={Rl4med-ddpo: Reinforcement learning for controlled guidance towards diverse medical image generation using vision-language foundation models},
+  author={Saremi, Parham and Kumar, Amar and Mohammed, Mohammed and TehraniNasab, Zahra and Arbel, Tal},
+  journal={arXiv preprint arXiv:2503.15784},
+  year={2025}
+}          </pre
+            >
+          </section>
+        </main>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+
+    <footer class="custom-footer">
+      <div class="footer-box">
+        <h5>Acknowledgments and Funding</h5>
+        <p class="small">
+          The authors are grateful for funding provided by the Natural Sciences and Engineering Research Council of Canada, the Canadian Institute for Advanced Research (CIFAR) Artificial Intelligence Chairs program, Mila - Quebec AI Institute, Google Research, Calcul Quebec, and the Digital Research Alliance of Canada.
+        </p>
+      </div>
+
+      <p class="small mb-3">
+        © Parham Saremi, Amar Kumar | 28th International Conference On Medical Image Computing And Computer Assisted Intervention
+      </p>
+    </footer>
+
+    <!-- Bootstrap JS bundle (scrollspy, collapse, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll("section");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              } else {
+                entry.target.classList.remove("visible");
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          },
+        );
+
+        sections.forEach((section) => {
+          observer.observe(section);
+        });
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbarHeight = document.querySelector(".custom-navbar").offsetHeight;
+    
+        // Add click event listener to all nav links
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default anchor behavior
+    
+            const targetId = this.getAttribute("href").substring(1); // Get the target section ID
+            const targetElement = document.getElementById(targetId);
+    
+            if (targetElement) {
+              const offsetTop = targetElement.offsetTop - navbarHeight; // Adjust for navbar height
+              window.scrollTo({
+                top: offsetTop,
+                behavior: "smooth", // Smooth scrolling
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
