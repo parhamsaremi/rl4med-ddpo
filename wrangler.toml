@@ -2,5 +2,5 @@ name = "rl4med-ddpo"
 main = "src/index.js"
 compatibility_date = "2025-07-03"
 kv_namespaces = [
-  { binding = "RL4Med-Counter", id = "490898b8994d4664b1e2e1acae651834" }
+  { binding = "RL4MED_COUNTER", id = "35a870638de84262b1788678b81cd9c8" }
 ]

@@ -24,7 +24,7 @@ export default {
       const path = url.pathname;
       
       // Get the current count
-      let count = await env.COUNTER_VISITOR.get('total_visitors');
+      let count = await env.RL4MED_COUNTER.get('total_visitors');
       if (count === null) {
         count = '1'; // Start with base count
       }
@@ -34,15 +34,15 @@ export default {
       if (path === '/increment') {
         // Check if this IP has been counted before
         const ipKey = `ip_${clientIP.replace(/\./g, '_')}`;
-        const hasVisited = await env.COUNTER_VISITOR.get(ipKey);
+        const hasVisited = await env.RL4MED_COUNTER.get(ipKey);
         
         if (!hasVisited) {
           // This is a new IP, increment the counter
           count += 1;
-          await env.COUNTER_VISITOR.put('total_visitors', count.toString());
+          await env.RL4MED_COUNTER.put('total_visitors', count.toString());
           
           // Mark this IP as counted (with 30-day expiration)
-          await env.COUNTER_VISITOR.put(ipKey, 'visited', {expirationTtl: 60 * 60 * 24 * 30});
+          await env.RL4MED_COUNTER.put(ipKey, 'visited', {expirationTtl: 60 * 60 * 24 * 30});
         }
       }
       
