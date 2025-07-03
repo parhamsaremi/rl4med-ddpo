@@ -642,15 +642,63 @@
         <p class="small">
           The authors are grateful for funding provided by the Natural Sciences and Engineering Research Council of Canada, the Canadian Institute for Advanced Research (CIFAR) Artificial Intelligence Chairs program, Mila - Quebec AI Institute, Google Research, Calcul Quebec, and the Digital Research Alliance of Canada.
         </p>
+        
       </div>
-<!-- 
       <p class="small mb-3">
         © Parham Saremi, Amar Kumar | 28th International Conference On Medical Image Computing And Computer Assisted Intervention
-      </p> -->
+      </p>
+      <div class="visitor-counter">
+        <span id="visitor-count">Loading...</span> visitors to this page
+      </div>
     </footer>
 
     <!-- Bootstrap JS bundle (scrollspy, collapse, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+      // Wait for the DOM to be fully loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the counter element
+        const counterElement = document.getElementById("visitor-count");
+
+        // Cloudflare Worker URL - our deployed worker
+        const workerBaseUrl =
+          "https://rl4med-ddpo.parhaamsaremi.workers.dev";
+
+        // Function to update the display with count
+        function updateCounterDisplay(count) {
+          if (counterElement) {
+            counterElement.textContent = count.toLocaleString();
+          }
+        }
+
+        // Function to handle errors
+        function handleError(error) {
+          console.error("Error with visitor counter:", error);
+          // If error occurs, show a default value
+          if (counterElement) {
+            counterElement.textContent = "1+";
+          }
+        }
+
+        try {
+          // Always call the increment endpoint - the worker will handle uniqueness by IP
+          fetch(`${workerBaseUrl}/increment`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              updateCounterDisplay(data.count);
+            })
+            .catch(handleError);
+        } catch (error) {
+          handleError(error);
+        }
+      });
+    </script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
