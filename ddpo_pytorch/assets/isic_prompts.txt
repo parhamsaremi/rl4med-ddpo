@@ -1,0 +1,32 @@
+a dermoscopic image with melanoma (MEL) with no visible artifacts
+a dermoscopic image with melanoma (MEL) showing ink
+a dermoscopic image with melanoma (MEL) showing ruler
+a dermoscopic image with melanoma (MEL) showing ruler, ink
+a dermoscopic image with melanoma (MEL) showing gel bubble
+a dermoscopic image with melanoma (MEL) showing gel bubble, ink
+a dermoscopic image with melanoma (MEL) showing gel bubble, ruler
+a dermoscopic image with melanoma (MEL) showing gel bubble, ruler, ink
+a dermoscopic image with melanoma (MEL) showing hair
+a dermoscopic image with melanoma (MEL) showing hair, ink
+a dermoscopic image with melanoma (MEL) showing hair, ruler
+a dermoscopic image with melanoma (MEL) showing hair, ruler, ink
+a dermoscopic image with melanoma (MEL) showing hair, gel bubble
+a dermoscopic image with melanoma (MEL) showing hair, gel bubble, ink
+a dermoscopic image with melanoma (MEL) showing hair, gel bubble, ruler
+a dermoscopic image with melanoma (MEL) showing hair, gel bubble, ruler, ink
+a dermoscopic image with melanocytic nevus (NV) with no visible artifacts
+a dermoscopic image with melanocytic nevus (NV) showing ink
+a dermoscopic image with melanocytic nevus (NV) showing ruler
+a dermoscopic image with melanocytic nevus (NV) showing ruler, ink
+a dermoscopic image with melanocytic nevus (NV) showing gel bubble
+a dermoscopic image with melanocytic nevus (NV) showing gel bubble, ink
+a dermoscopic image with melanocytic nevus (NV) showing gel bubble, ruler
+a dermoscopic image with melanocytic nevus (NV) showing gel bubble, ruler, ink
+a dermoscopic image with melanocytic nevus (NV) showing hair
+a dermoscopic image with melanocytic nevus (NV) showing hair, ink
+a dermoscopic image with melanocytic nevus (NV) showing hair, ruler
+a dermoscopic image with melanocytic nevus (NV) showing hair, ruler, ink
+a dermoscopic image with melanocytic nevus (NV) showing hair, gel bubble
+a dermoscopic image with melanocytic nevus (NV) showing hair, gel bubble, ink
+a dermoscopic image with melanocytic nevus (NV) showing hair, gel bubble, ruler
+a dermoscopic image with melanocytic nevus (NV) showing hair, gel bubble, ruler, ink

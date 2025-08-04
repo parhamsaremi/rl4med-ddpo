@@ -1,0 +1,29 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="rl4med-ddpo",
+    version="0.0.1",
+    packages=["ddpo_pytorch"],
+    python_requires=">=3.10",
+    install_requires=[
+        "ml-collections",
+        "absl-py",
+        "huggingface-hub==0.25.2",
+        "diffusers[torch]==0.17.1",
+        "accelerate==0.17",
+        "wandb",
+        "pandas",
+        "scikit-learn",
+        "torchvision",
+        "inflect==6.0.4",
+        "pydantic==1.10.9",
+        "transformers==4.30.2",
+        "torchmetrics==1.6.1",
+        "matplotlib==3.10.0",
+        "scipy==1.15.2",
+        "torch-fidelity==0.3.0",
+        "lpips==0.1.4",
+        "tsnecuda==3.0.1",
+        "gdown"
+    ],
+)
