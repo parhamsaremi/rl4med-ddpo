@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="https://arxiv.org/pdf/2503.15784" alt="arXiv">
-    <img src="https://img.shields.io/badge/arXiv-2410.05203-b31b1b.svg?style=flat" /></a>
+    <img src="https://img.shields.io/badge/arXiv-2503.15784-b31b1b.svg?style=flat" /></a>
 <a href="https://parhamsaremi.github.io/rl4med-ddpo/" alt="webpage">
     <img src="https://img.shields.io/badge/Webpage-darkviolet" /></a>
 <img src="https://img.shields.io/github/license/parhamsaremi/rl4med-ddpo" />
